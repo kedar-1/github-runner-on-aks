@@ -29,7 +29,7 @@ jobs:
       - run: |
           az account show
           sudo az aks install-cli
-          az aks get credentials -g ${{ secrets.AKS_RESOURCE_GROUP }} -n ${{ secrets.AKS_NAME }}
+          az aks get-credentials -g ${{ secrets.AKS_RESOURCE_GROUP }} -n ${{ secrets.AKS_NAME }}
           kubectl get pods -A
  
       #- name: Azure CLI script
