@@ -20,15 +20,7 @@ jobs:
           echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
           sudo apt-get update
           sudo apt-get install azure-cli -y
-      #- name: Install Docker
-      #  run: |
-      #    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-      #    echo \
-      #      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-      #      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      #    sudo apt-get update
-      #    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-      #    sudo ln -s ~/.docker/desktop/docker.sock /var/run/docker.sock
+      - name: Install kubectl
       - name: Azure login
         uses: azure/login@v1
         with:
@@ -37,7 +29,10 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - run: |
           az account show
-
+          az aks install-cli
+          az aks get credentials -g ${{ secrets.AKS_RESOURCE_GROUP }} -n ${{ secrets.AKS_NAME }}
+          kubectl get pods -A
+ 
       #- name: Azure CLI script
       #  uses: azure/CLI@v1
       #  with:
